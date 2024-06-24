@@ -1,35 +1,6 @@
 const { Schema, model, now } = require("mongoose");
 const dayjs = require("dayjs");
-
-const reactionSchema = new Schema({
-  reactionBody: [
-    {
-      type: String,
-      required: [true, "Reaction details is required."],
-      maxlength: 280,
-    },
-  ],
-  username: [
-    {
-      type: String,
-      required: [true, "Reaction username is required."],
-    },
-  ],
-  createdAt: [
-    {
-      type: Date,
-      default: Date.now,
-      get: (date) => {
-        if (date != null) {
-          const originalDate = dayjs(date);
-          const newDate = originalDate.format("M/D/YYYY");
-          return newDate;
-        }
-        return;
-      },
-    },
-  ],
-});
+const Reaction = require("./Reaction");
 
 const thoughtSchema = new Schema(
   {
@@ -55,7 +26,7 @@ const thoughtSchema = new Schema(
         },
       },
     ],
-    reactions: [reactionSchema],
+    reactions: [Reaction],
   },
   { toJSON: { getters: true, virtuals: true } }
 );
