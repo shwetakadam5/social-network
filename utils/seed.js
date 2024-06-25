@@ -34,17 +34,20 @@ connection.once("open", async () => {
     const username = getRandomName();
     const first = username.split(" ")[0];
     const last = username.split(" ")[1];
-    const emailid =
+    const email = (
       first +
       "." +
       last +
       Math.floor(Math.random() * (99 - 18 + 1) + 18) +
       "@" +
-      getRandomDomainName();
+      getRandomDomainName()
+    ).toLowerCase();
+
+    console.log(email);
 
     users.push({
       username,
-      emailid,
+      email,
     });
   }
 
