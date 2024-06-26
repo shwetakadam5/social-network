@@ -59,6 +59,9 @@ module.exports = {
           "User and associated thoughts & associated user in friends deleted!",
       });
     } catch (err) {
+      if (err.name === "CastError") {
+        return res.status(500).json({ "Invalid ID Value": err.value });
+      }
       res.status(500).json(err);
     }
   },
@@ -77,7 +80,9 @@ module.exports = {
 
       res.status(200).json(updatedUser);
     } catch (err) {
-      console.log(err);
+      if (err.name === "CastError") {
+        return res.status(500).json({ "Invalid ID Value": err.value });
+      }
       res.status(500).json(err);
     }
   },
