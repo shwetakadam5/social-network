@@ -25,7 +25,6 @@ const names = [
   "Smith",
   "Jones",
   "Coollastname",
-  "enter_name_here",
   "Ze",
   "Zechariah",
   "Zeek",
@@ -104,6 +103,7 @@ const getRandomThoughts = (int) => {
   for (let i = 0; i < int; i++) {
     results.push({
       thoughtText: getRandomArrItem(thoughtTexts),
+      // username: getRandomName(),
       reactions: [...getThoughtReactions(2)],
     });
   }
@@ -126,4 +126,4 @@ const getThoughtReactions = (int) => {
 };
 
 // Export the functions for use in seed.js
-module.exports = { getRandomName, getRandomDomainName, getRandomThoughts };
+module.exports = { getRandomName, getRandomDomainName, getRandomThoughts,getRandomArrItem };

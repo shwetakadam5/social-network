@@ -51,12 +51,33 @@ connection.once("open", async () => {
     });
   }
 
-  await User.insertMany(users);
-  await Thought.insertMany(thoughts);
+  const userData = await User.insertMany(users);
+  const updatedThoughts = [];
+  for (let index = 0; index < thoughts.length; index++) {
+    const element = thoughts[index];
+    element.username = userData[Math.floor(Math.random() * 20)]._id;
+    updatedThoughts.push(element);
+  }
 
+  const thoughtData = await Thought.insertMany(updatedThoughts);
+
+  for (let jindex = 0; jindex < thoughtData.length; jindex++) {
+    for (let index = 0; index < userData.length; index++) {
+      if (
+        thoughtData[jindex].username.toString() ===
+        userData[index]._id.toString()
+      ) {
+        await User.findByIdAndUpdate(userData[index]._id, {
+          $push: {
+            thoughts: thoughtData[jindex],
+          },
+        });
+        break;
+      }
+    }
+  }
   console.table(users);
   console.table(thoughts);
-
   console.info("Seeding complete! 🌱");
   process.exit(0);
 });

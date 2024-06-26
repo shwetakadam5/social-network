@@ -10,6 +10,11 @@ const thoughtSchema = new Schema(
       minlength: 1,
       maxlength: 280,
     },
+    username: { type: Schema.Types.ObjectId, ref: "user" },
+    // {
+    //   type: String,
+    //   required: [true, "User name is required."],
+    // },
 
     createdAt: {
       type: Date,
