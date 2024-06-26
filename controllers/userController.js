@@ -32,7 +32,7 @@ module.exports = {
       const newUserData = await User.create(req.body);
       res
         .status(200)
-        .json({ Message: "User Created Successfully", newUserData });
+        .json({ message: "User Created Successfully", newUserData });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -49,13 +49,35 @@ module.exports = {
       await Thought.deleteMany({ _id: { $in: user.thoughts } });
 
       // Remove the user from all friend lists
-      await User.updateMany(
+      const resultUpdated = await User.updateMany(
         { friends: req.params.userId }, // Update documents where the user is a friend
         { $pull: { friends: req.params.userId } } // Remove the user from the friends array
       );
 
-      res.json({ message: "User and associated thoughts deleted!" });
+      res.json({
+        message:
+          "User and associated thoughts & associated user in friends deleted!",
+      });
     } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  // Updates user using the findOneAndUpdate method. Uses the ID, and the $set operator in mongodb to inject the request body. Enforces validation.
+  async updateUser(req, res) {
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "No User with this id!" });
+      }
+
+      res.status(200).json(updatedUser);
+    } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
