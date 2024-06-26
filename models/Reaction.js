@@ -12,10 +12,11 @@ const reactionSchema = new Schema({
     maxlength: 280,
   },
 
-  username: {
-    type: String,
-    required: [true, "Reaction username is required."],
-  },
+  username: { type: Schema.Types.ObjectId, ref: "user" },
+  // {
+  //   type: String,
+  //   required: [true, "Reaction username is required."],
+  // },
 
   createdAt: {
     type: Date,

@@ -56,6 +56,10 @@ connection.once("open", async () => {
   for (let index = 0; index < thoughts.length; index++) {
     const element = thoughts[index];
     element.username = userData[Math.floor(Math.random() * 20)]._id;
+    for (let i = 0; i < element.reactions.length; i++) {
+      element.reactions[i].username =
+        userData[Math.floor(Math.random() * 20)]._id;
+    }
     updatedThoughts.push(element);
   }
 
