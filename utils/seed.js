@@ -43,8 +43,6 @@ connection.once("open", async () => {
       getRandomDomainName()
     ).toLowerCase();
 
-    console.log(email);
-
     users.push({
       username,
       email,
@@ -74,14 +72,14 @@ connection.once("open", async () => {
         await User.findByIdAndUpdate(userData[index]._id, {
           $push: {
             thoughts: thoughtData[jindex],
+            friends: userData[Math.floor(Math.random() * 20)],
           },
         });
         break;
       }
     }
   }
-  console.table(users);
-  console.table(thoughts);
+
   console.info("Seeding complete! 🌱");
   process.exit(0);
 });
