@@ -100,4 +100,44 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  async getReactions(req, res) {
+    try {
+      const reactionsOnThought = await Thought.findById({
+        _id: req.params.thoughtId,
+      }).select("reactions");
+
+      if (!reactionsOnThought) {
+        return res
+          .status(404)
+          .json({ message: "No Reactions found for the ID" });
+      }
+      res.status(200).json(reactionsOnThought);
+    } catch (err) {
+      if (err.name === "CastError") {
+        return res.status(500).json({ "Invalid ID Value": err.value });
+      }
+      res.status(500).json(err);
+    }
+  },
+  async createReaction(req, res) {
+    try {
+      const newReactionData = { ...req.body };
+
+      // Add the reaction in the thoughts
+      const thoughtUpdated = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $push: { reactions: newReactionData } }, // Add the reaction to the reactions
+        { runValidators: true, new: true }
+      );
+
+      res.status(200).json({
+        message:
+          "Reaction created and added in the associated thought successfully",
+        newReactionData,
+        thoughtUpdated,
+      });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
