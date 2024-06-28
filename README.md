@@ -64,6 +64,7 @@ https://github.com/shwetakadam5/social-network
 
 **Link for the functionality demo :**
 Quick Demo (Important):
+https://www.loom.com/share/e138f6ca5739423491bb2f12c9bb254f?sid=fc29e0a0-3f86-4821-9736-8ff117d150fa
 
 ## Usage Screenshots
 
