@@ -140,4 +140,21 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  async deleteReaction(req, res) {
+    try {
+      // Delete the reaction in the thoughts
+      const reactionDeletedFromThought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } }, // Delete the reaction from the reactions
+        { runValidators: true, new: true }
+      );
+
+      res.status(200).json({
+        message: "Reaction deleted from the associated thought successfully",
+        reactionDeletedFromThought,
+      });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
