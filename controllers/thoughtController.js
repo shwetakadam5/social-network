@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Thought = require("../models/Thought");
 
 module.exports = {
+  // Function to get all the thoughts.
   async getThoughts(req, res) {
     try {
       const thoughts = await Thought.find().populate(["username", "reactions"]);
@@ -10,6 +11,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Function to get a single thought based on the thought id
   async getSingleThought(req, res) {
     try {
       const thought = await Thought.findById({ _id: req.params.thoughtId })
@@ -29,6 +31,12 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //  Function to create a new thought. The request body would look like
+  // {
+  //   "thoughtText" : "Try try till you succeedaa",
+  //   "username" : "667c1f889dce66deb588e69f",
+  //   "reactions" : [{"reactionBody" : "True" , "username" : "667c1f889dce66deb588e6a0"}]
+  // }
   async createThought(req, res) {
     try {
       const newThoughtData = await Thought.create(req.body);
@@ -50,6 +58,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //  Function to delete a thought based on the thought id. The thought is also removed from the thoughts list of the user.
   async deleteThought(req, res) {
     try {
       const thought = await Thought.findOneAndDelete({
@@ -80,6 +89,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //  Function to update a thought based on the thought id.
   async updateThought(req, res) {
     try {
       const updatedThought = await Thought.findOneAndUpdate(
@@ -100,6 +110,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //Function to get the reactions on a thought identified by thought id.
   async getReactions(req, res) {
     try {
       const reactionsOnThought = await Thought.findById({
@@ -119,6 +130,12 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //  Function to create a new reaction on a thought identified by thought id. The request body would look like
+  //   {
+  //     "reactionBody": "Perfect",
+  //      "username": "667cec5994094c7b3aeea889"
+
+  // }
   async createReaction(req, res) {
     try {
       const newReactionData = { ...req.body };
@@ -140,6 +157,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //Function to delete the reactions on a thought identified by thought id.
   async deleteReaction(req, res) {
     try {
       // Delete the reaction in the thoughts

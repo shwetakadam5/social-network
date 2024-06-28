@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Thought = require("../models/Thought");
 
 module.exports = {
+  // Function to get all the users.
   async getUsers(req, res) {
     try {
       const users = await User.find().populate(["thoughts", "friends"]);
@@ -10,6 +11,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Function to get a single user based on the user id
   async getSingleUser(req, res) {
     try {
       const user = await User.findById({ _id: req.params.userId })
@@ -27,6 +29,11 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //  Function to create a new user. The request body would look like
+  // {
+  //   "username" : "Shweta Kadam2",
+  //   "email" : "Shweta.kadam2@gmail.com"
+  // }
   async createUser(req, res) {
     try {
       const newUserData = await User.create(req.body);
@@ -37,6 +44,8 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //  Function to delete a user based on the user id.
+  // All the thoughts associated with the user are also deleted and the friends list of the other users are also updated.
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndDelete({ _id: req.params.userId });
@@ -65,7 +74,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Updates user using the findOneAndUpdate method. Uses the ID, and the $set operator in mongodb to inject the request body. Enforces validation.
+  // Function to update the user based on user id.The $set operator in mongodb is used to inject the request body. Enforces validation.
   async updateUser(req, res) {
     try {
       const updatedUser = await User.findOneAndUpdate(
@@ -86,15 +95,15 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //Function to get the friends of a user id.
   async getFriends(req, res) {
     try {
       const userFriends = await User.findById({
         _id: req.params.userId,
       })
         .select("friends")
-        .populate(["friends"]);
+        .populate("friends");
 
-      console.log(userFriends);
       if (!userFriends) {
         return res.status(404).json({ message: "No friends found for the ID" });
       }
@@ -106,6 +115,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //  Function to add a new friend to the user id. The friend is identified with a friendId
   async createFriend(req, res) {
     try {
       const friendDetails = await User.findById({
@@ -128,6 +138,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  //  Function to delete a friend from the user id's list . The friend is identified with a friendId
   async deleteFriend(req, res) {
     try {
       const friendDeletedFromUser = await User.findByIdAndUpdate(
